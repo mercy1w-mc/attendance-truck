@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A student attendance and participation calculator for tracking course attendance and eligibility.">
+  <title>AttendTrack | Student Attendance Calculator</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <header class="site-header">
+    <a class="brand" href="#dashboard" aria-label="AttendTrack home">
+      <span class="brand-icon" aria-hidden="true">A</span>
+      <span>AttendTrack</span>
+    </a>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#dashboard">Dashboard</a>
+      <a href="#records">Attendance Records</a>
+      <a href="#record-attendance">Record Attendance</a>
+      <a href="#calculator">Calculator</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section id="dashboard" class="page-section">
+      <div class="welcome">
+        <div>
+          <p class="eyebrow">ACADEMIC MANAGEMENT</p>
+          <h1>Student Attendance Dashboard</h1>
+          <p class="muted">
+            Monitor attendance, track participation, and check
+            academic attendance requirements.
+          </p>
+        </div>
+        <a class="button button-primary" href="#record-attendance">
+          + Record attendance
+        </a>
+      </div>
+
+      <div class="stats-grid">
+        <article class="stat-card">
+          <p>Total students</p>
+          <h2 id="total-students">0</h2>
+          <span>Students in sample records</span>
+        </article>
+
+        <article class="stat-card">
+          <p>Average attendance</p>
+          <h2 id="average-attendance">0%</h2>
+          <span>Across all student records</span>
+        </article>
+
+        <article class="stat-card">
+          <p>Meeting requirement</p>
+          <h2 id="eligible-students">0</h2>
+          <span>Students meeting the threshold</span>
+        </article>
+
+        <article class="stat-card">
+          <p>Below requirement</p>
+          <h2 id="below-requirement">0</h2>
+          <span>Students needing improvement</span>
+        </article>
+      </div>
+
+      <div class="panel">
+        <div class="section-heading">
+          <div>
+            <h2>Attendance overview</h2>
+            <p class="muted">A quick look at the sample records.</p>
+          </div>
+          <a href="#records">View all records →</a>
+        </div>
+
+        <div id="dashboard-summary" class="summary-content">
+          Loading attendance summary...
+        </div>
+      </div>
+    </section>
+
+    <section id="records" class="page-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">STUDENT MANAGEMENT</p>
+          <h2>Attendance Records</h2>
+          <p class="muted">
+            Search students and filter records by course or status.
+          </p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="filters">
+          <div class="form-group search-field">
+            <label for="search-input">Search records</label>
+            <input
+              type="search"
+              id="search-input"
+              placeholder="Search name, student ID, or course..."
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="course-filter">Filter by course</label>
+            <select id="course-filter">
+              <option value="">All courses</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="status-filter">Attendance status</label>
+            <select id="status-filter">
+              <option value="">All statuses</option>
+              <option value="Present">Present</option>
+              <option value="Late">Late</option>
+              <option value="Absent">Absent</option>
+            </select>
+          </div>
+        </div>
+
+        <p id="records-count" class="muted" aria-live="polite">
+          Loading records...
+        </p>
+
+        <div class="table-wrapper">
+          <table>
+            <caption class="sr-only">
+              Student attendance records, attendance percentages,
+              and eligibility status
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Student</th>
+                <th scope="col">Course</th>
+                <th scope="col">Sessions attended</th>
+                <th scope="col">Attendance</th>
+                <th scope="col">Last status</th>
+                <th scope="col">Eligibility</th>
+              </tr>
+            </thead>
+            <tbody id="attendance-table-body">
+              <tr>
+                <td colspan="6">Loading student records...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p id="records-message" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section id="record-attendance" class="page-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">SESSION MANAGEMENT</p>
+          <h2>Record Attendance</h2>
+          <p class="muted">
+            Record a student's attendance for a sample class session.
+          </p>
+        </div>
+      </div>
+
+      <div class="panel form-panel">
+        <form id="attendance-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="student-select">Student</label>
+              <select id="student-select" name="studentId" required>
+                <option value="">Select a student</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="session-course">Course</label>
+              <select id="session-course" name="course" required>
+                <option value="">Select a course</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="session-date">Session date</label>
+              <input
+                type="date"
+                id="session-date"
+                name="sessionDate"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="attendance-status">Attendance status</label>
+              <select id="attendance-status" name="status" required>
+                <option value="">Select status</option>
+                <option value="Present">Present</option>
+                <option value="Late">Late</option>
+                <option value="Absent">Absent</option>
+              </select>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="participation">Participation rating</label>
+              <select id="participation" name="participation" required>
+                <option value="">Select participation level</option>
+                <option value="Excellent">Excellent</option>
+                <option value="Good">Good</option>
+                <option value="Fair">Fair</option>
+                <option value="Poor">Poor</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="button button-primary">
+            Save attendance record
+          </button>
+
+          <p id="form-message" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <section id="calculator" class="page-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">ELIGIBILITY CHECK</p>
+          <h2>Attendance Calculator</h2>
+          <p class="muted">
+            Set the minimum attendance required by your institution.
+          </p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="calculator-controls">
+          <div class="form-group">
+            <label for="requirement-input">
+              Minimum attendance requirement (%)
+            </label>
+            <input
+              type="number"
+              id="requirement-input"
+              min="1"
+              max="100"
+              step="1"
+              value="75"
+              required
+            >
+          </div>
+          <button
+            type="button"
+            id="calculate-button"
+            class="button button-primary"
+          >
+            Recalculate eligibility
+          </button>
+        </div>
+
+        <div id="calculator-result" role="status" aria-live="polite">
+          Set the attendance requirement to calculate eligibility.
+        </div>
+
+        <p class="muted">
+          Calculation: sessions attended divided by total sessions,
+          multiplied by 100. Late arrivals count as attended.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>AttendTrack — Group 9 Student Attendance and Participation Calculator</p>
+    <p>Academic demonstration project using sample data.</p>
+  </footer>
+</body>
+</html>
